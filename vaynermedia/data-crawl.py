@@ -17,6 +17,7 @@ def tally_cost(df, list):
     Returns the total spent on a list of campaigns.
     '''
     total = 0
+    #Need to verify that each item in the list is also in the referenced df
     for item in list:
         total += df[df["campaign_id"]==item].spend.sum()
     return total
@@ -147,4 +148,45 @@ def conversion_for_state_for_source(df, state, source):
                         total += action_summary.loc["conversions", source]
     return total
 
-print(conversion_for_state_for_source(source1_df, "NY", "A"))
+
+
+
+#print(conversion_for_state_for_source(source1_df, "NY", "A"))
+#print(len(source1_df.audience.unique()))
+
+
+campaigns_in_source2 = source2_df.campaign_id.unique()
+
+def get_spend_for_campaign(campaign):
+    total_spent = 0
+    if campaign in campaigns_in_source2:
+        total_spent = source2_df[source2_df["campaign_id"] == campaign].spend.sum()
+    return total_spent
+
+
+def best_cpm_of_state_hair_color_combo():
+
+    source1_df['state'] = source1_df.audience.apply(lambda x: x.split("_")[0])
+    source1_df['hair_color'] = source1_df.audience.apply(lambda x: x.split("_")[1])
+    #print(pd.pivot_table(source1_df, index=["state"], columns=["hair_color"], values="impressions", aggfunc=np.sum, margins=True))
+
+    '''
+    Sort on duplicated campaign_id
+    '''
+    #camp_ids = source1_df["campaign_id"]
+    #source1_df[source1_df.duplicated(['campaign_id'], keep=False)].to_csv("test.csv")
+
+
+    unique_campaigns_df = source1_df.groupby(['campaign_id', 'state', 'hair_color']).sum().reset_index()
+    #print(unique_campaigns_df)
+
+    unique_campaigns_df['spend'] = unique_campaigns_df.campaign_id.apply(lambda x: get_spend_for_campaign(x))
+
+    unique_campaigns_df['state_hair'] = unique_campaigns_df['state'] + '_' + unique_campaigns_df['hair_color']
+
+    state_with_hair_color_df = unique_campaigns_df.groupby('state_hair').sum().reset_index()
+
+    state_with_hair_color_df['cpm'] = (state_with_hair_color_df.impressions / state_with_hair_color_df.spend) * 1000
+
+    print(state_with_hair_color_df.loc[state_with_hair_color_df.cpm.idxmin(), 'state_hair'])
+    #state_with_hair_color_df.to_csv('state_hair.csv')
