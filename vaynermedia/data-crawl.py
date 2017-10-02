@@ -1,3 +1,10 @@
+'''
+Tested and executed on Python 3.6
+
+'''
+
+
+
 import pandas as pd
 import json
 import numpy as np
