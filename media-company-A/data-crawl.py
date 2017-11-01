@@ -84,7 +84,7 @@ def campaigns_by_number_of_days(df, duration):
 #    print(campaign_frequency)
     #cp = df.groupby('campaign_id').date.nunique()
     cp = df.groupby('campaign_id').agg({"date": pd.Series.nunique})
-    days = cp[cp["date"]>=duration]
+    days = cp[cp["date"]>duration]
     #cp = df.groupby('campaign_id').date.apply(lambda x: len(x.unique()))
     #cp['unique_days'] = cp.date.nunique()
     #print(days.shape[0])
