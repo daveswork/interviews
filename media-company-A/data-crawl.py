@@ -71,16 +71,24 @@ def campaigns_by_number_of_days(df, duration):
     Returns a list of campaigns that have run for longer than the specified duration.
     '''
     #Generate a list of unique campaign ids.
+
     campaign_list = df.campaign_id.unique()
     #This list will hold campaign ids for those campaigns of interest to us.
     target_list = []
     #For each campaign get a list of days that it we have reported data for.
     #Then count how many days and compare it.
-    for campaign in campaign_list:
-        campaign_frequency = df[df["campaign_id"] == campaign]
-        if len(campaign_frequency.date.unique()) >= duration:
-            target_list.append(campaign)
-    return target_list
+#    for campaign in campaign_list: 
+#        campaign_frequency = df[df["campaign_id"] == campaign]
+#        if len(campaign_frequency.date.unique()) >= duration:
+#            target_list.append(campaign)
+#    print(campaign_frequency)
+    #cp = df.groupby('campaign_id').date.nunique()
+    cp = df.groupby('campaign_id').agg({"date": pd.Series.nunique})
+    days = cp[cp["date"]>duration]
+    #cp = df.groupby('campaign_id').date.apply(lambda x: len(x.unique()))
+    #cp['unique_days'] = cp.date.nunique()
+    #print(days.shape[0])
+    return days.shape[0]
 
 
 def get_source_action_type(df, source, action_type):
@@ -170,7 +178,7 @@ campaigns = campaigns_by_haircolor(source1_df, "purple")
 #Task 1, spend on campaigns run against people with purple hair.
 task1_ans = "Task 1: " + str(tally_cost(source2_df, campaigns)) + "\n"
 #Task 2, number of campaigns that ran for longer than 4 days.
-task2_ans = "Task 2: " + str(len(campaigns_by_number_of_days(source2_df, 4))) + "\n"
+task2_ans = "Task 2: " + str((campaigns_by_number_of_days(source2_df, 4))) + "\n"
 #Task 3, number of times source H reported on clicks.
 task3_ans = "Task 3: " + str(get_source_action_type(source2_df,"H", "clicks" )) + "\n"
 #Task 4, a list of sources that reported more junk than noise.
@@ -180,15 +188,18 @@ task5_ans = "Task 5: " + str(get_spend_on_ad_type(source2_df, "video")) + "\n"
 #Task 6, number of conversions reported by source H for NY
 task6_ans = "Task 6: " + str(conversion_for_state_for_source(source1_df, "NY", "H")) + "\n"
 #Task 7, best CPM grouped by state & hair color combo.
-task7_ans = "Task 7: " + str(best_cpm_of_state_hair_color_combo()) + "\n"
+#task7_ans = "Task 7: " + str(best_cpm_of_state_hair_color_combo()) + "\n"
 
 execution_time = "Execution time: "+ str(time.time() - start_time) + "\n"
+
 with open('answers.txt', 'w+') as answers:
-    answers.write(task1_ans)
-    answers.write(task2_ans)
-    answers.write(task3_ans)
-    answers.write(task4_ans)
-    answers.write(task5_ans)
-    answers.write(task6_ans)
-    answers.write(task7_ans)
+    #answers.write(task1_ans)
+    #answers.write(task_ans)
+    #answers.write(task3_ans)
+    #answers.write(task4_ans)
+    #answers.write(task5_ans)
+    #answers.write(task6_ans)
+    #answers.write(task7_ans)
     answers.write(execution_time)
+print(execution_time)
+print(task2_ans)
