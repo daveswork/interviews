@@ -193,13 +193,12 @@ task6_ans = "Task 6: " + str(conversion_for_state_for_source(source1_df, "NY", "
 execution_time = "Execution time: "+ str(time.time() - start_time) + "\n"
 
 with open('answers.txt', 'w+') as answers:
-    #answers.write(task1_ans)
-    #answers.write(task_ans)
-    #answers.write(task3_ans)
-    #answers.write(task4_ans)
-    #answers.write(task5_ans)
-    #answers.write(task6_ans)
-    #answers.write(task7_ans)
+    answers.write(task1_ans)
+    answers.write(task_ans)
+    answers.write(task3_ans)
+    answers.write(task4_ans)
+    answers.write(task5_ans)
+    answers.write(task6_ans)
+    answers.write(task7_ans)
     answers.write(execution_time)
 print(execution_time)
-print(task2_ans)
