@@ -188,13 +188,13 @@ task5_ans = "Task 5: " + str(get_spend_on_ad_type(source2_df, "video")) + "\n"
 #Task 6, number of conversions reported by source H for NY
 task6_ans = "Task 6: " + str(conversion_for_state_for_source(source1_df, "NY", "H")) + "\n"
 #Task 7, best CPM grouped by state & hair color combo.
-#task7_ans = "Task 7: " + str(best_cpm_of_state_hair_color_combo()) + "\n"
+task7_ans = "Task 7: " + str(best_cpm_of_state_hair_color_combo()) + "\n"
 
 execution_time = "Execution time: "+ str(time.time() - start_time) + "\n"
 
 with open('answers.txt', 'w+') as answers:
     answers.write(task1_ans)
-    answers.write(task_ans)
+    answers.write(task2_ans)
     answers.write(task3_ans)
     answers.write(task4_ans)
     answers.write(task5_ans)

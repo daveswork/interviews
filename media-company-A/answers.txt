@@ -1,1 +1,8 @@
-Execution time: 2.8064310550689697
+Task 1: 566512
+Task 2: 83
+Task 3: 623
+Task 4: ['D', 'E', 'J']
+Task 5: 16.49
+Task 6: 502.0
+Task 7: OR_green
+Execution time: 12.123502016067505
